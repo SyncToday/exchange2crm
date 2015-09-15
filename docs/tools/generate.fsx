@@ -11,17 +11,17 @@
 // (This is the original behaviour of ProjectScaffold prior to multi project support)
 let referenceBinaries = []
 // Web site location for the generated documentation
-let website = "/##ProjectName##"
+let website = "/exchange2crm"
 
-let githubLink = "http://github.com/##GitHome##/##GitName##"
+let githubLink = "http://github.com/SyncToday/exchange2crm"
 
 // Specify more information about your project
 let info =
-  [ "project-name", "##ProjectName##"
-    "project-author", "##Author##"
-    "project-summary", "##Summary##"
+  [ "project-name", "exchange2crm"
+    "project-author", "David Podhola"
+    "project-summary", "Import Office 365 Exchange Contact to Microsoft Dynamics CRM"
     "project-github", githubLink
-    "project-nuget", "http://nuget.org/packages/##ProjectName##" ]
+    "project-nuget", "http://nuget.org/packages/exchange2crm" ]
 
 // --------------------------------------------------------------------------------------
 // For typical project, no changes are needed below

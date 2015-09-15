@@ -10,8 +10,8 @@ Introducing your project
 Say more
 
 *)
-#r "FSharp.ProjectScaffold.dll"
-open FSharp.ProjectScaffold
+#r "exchange2crm.dll"
+open exchange2crm
 
 Library.hello 0
 (**

@@ -1,4 +1,4 @@
-﻿namespace FSharp.ProjectTemplate
+namespace exchange2crm
 
 /// Documentation for my library
 ///

@@ -1,6 +1,6 @@
-﻿module FSharp.ProjectScaffold.Tests
+module exchange2crm.Tests
 
-open FSharp.ProjectTemplate
+open exchange2crm
 open NUnit.Framework
 
 [<Test>]
