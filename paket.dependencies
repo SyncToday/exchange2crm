@@ -1,6 +1,7 @@
 source https://nuget.org/api/v2
 
 nuget Destructurama.FSharp
+nuget EWS-Api-2.0
 nuget FSharp.Formatting
 nuget NUnit 
 nuget NUnit.Runners

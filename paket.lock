@@ -3,6 +3,7 @@ NUGET
   specs:
     Destructurama.FSharp (1.0.14)
       Serilog (>= 1.4.204)
+    EWS-Api-2.0 (1.0.1)
     FAKE (4.4.1)
     FSharp.Compiler.Service (0.0.90)
     FSharp.Formatting (2.10.3)
