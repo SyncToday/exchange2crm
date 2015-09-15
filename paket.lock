@@ -1,6 +1,8 @@
 NUGET
   remote: https://nuget.org/api/v2
   specs:
+    Destructurama.FSharp (1.0.14)
+      Serilog (>= 1.4.204)
     FAKE (4.4.1)
     FSharp.Compiler.Service (0.0.90)
     FSharp.Formatting (2.10.3)
@@ -18,6 +20,7 @@ NUGET
     NUnit.Runners (2.6.4)
     Octokit (0.15.0)
       Microsoft.Net.Http
+    Serilog (1.5.11)
     SourceLink.Fake (1.1.0)
 GITHUB
   remote: fsharp/FAKE
