@@ -4,6 +4,13 @@ open Serilog
 
 module Common =
     
+    let initConsoleLog () =
+        Log.Logger <- LoggerConfiguration()
+            .Destructure.FSharpTypes()
+            .WriteTo.ColoredConsole()
+            .CreateLogger()
+        Log.Information( "Application started" )
+
     let initLog writer =
         Log.Logger <- LoggerConfiguration()
             .Destructure.FSharpTypes()
