@@ -192,3 +192,4 @@ docs/content/release-notes.md
 
 ConnectionStrings.config
 appSettings.config
+Secret.fs

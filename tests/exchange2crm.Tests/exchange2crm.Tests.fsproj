@@ -68,6 +68,9 @@
       <Paket>True</Paket>
     </Content>
     <Compile Include="Tests.fs" />
+    <Content Include="appSettings.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="paket.references" />
     <Content Include="App.config" />
   </ItemGroup>

@@ -71,12 +71,13 @@
     <Content Include="bin\tools\SolutionPackager.exe">
       <Paket>True</Paket>
     </Content>
-    <Compile Include="Common.fs" />
+    <Compile Include="Secret.fs" />
     <Compile Include="Library.fs" />
     <None Include="Script.fsx" />
     <None Include="paket.references" />
     <None Include="paket.template" />
     <Content Include="App.config" />
+    <Compile Include="Common.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
