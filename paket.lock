@@ -19,6 +19,7 @@ NUGET
     Microsoft.Bcl.Build (1.0.21)
     Microsoft.CrmSdk.CoreAssemblies (5.0.18)
       Microsoft.IdentityModel (>= 6.1.7600.16394) - framework: >= net40
+    Microsoft.Exchange.WebServices (2.2.0)
     Microsoft.IdentityModel (6.1.7600.16394) - framework: >= net40
     Microsoft.Net.Http (2.2.29)
       Microsoft.Bcl (>= 1.1.10)

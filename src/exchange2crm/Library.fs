@@ -5,6 +5,7 @@ open System.Linq
 open FSharp.Data.TypeProviders
 open FSharp.Configuration
 open Serilog
+open Microsoft.Exchange.WebServices.Data
 
 /// Documentation for my library
 ///
@@ -41,3 +42,14 @@ module Library =
         |> Seq.tryHead
     Log.Debug( "getCompany {Name} => {@Result}", companyName, result )
     result
+
+  let getContacts  =
+    let _service = new ExchangeService()
+    _service.EnableScpLookup <- true 
+    _service.Credentials <- new WebCredentials(Settings.ExchangeUserEmail, Settings.ExchangePassword)
+    _service.AutodiscoverUrl(Settings.ExchangeUserEmail, (fun _ -> true) )
+    let folder = Folder.Bind(_service, WellKnownFolderName.Contacts)
+    let view = new ItemView(1000)
+    let folderItems = folder.FindItems(view)
+    folderItems.AsEnumerable() |> Seq.cast<Item>
+

@@ -5,6 +5,7 @@ nuget DynamicsCRMProvider
 nuget EWS-Api-2.0
 nuget FSharp.Configuration
 nuget FSharp.Formatting
+nuget Microsoft.Exchange.WebServices
 nuget Microsoft.Web.WebJobs.Publish
 nuget NUnit 
 nuget NUnit.Runners
