@@ -45,6 +45,31 @@ module Xrm =
                 related
             )
 
+    let getAccountById (accountId : string) =
+        Log.Information("Searching for account {AccountId}", accountId)
+
+        let ctx = context()
+        
+        let result = 
+            let accountIdG = ref Guid.Empty
+            if Guid.TryParse( accountId, accountIdG ) then
+                query {
+                    for account in ctx.accountSet do
+                    where (account.accountid = accountIdG.Value)
+                    select account
+                } 
+                |> Seq.tryHead
+            else 
+                None
+        
+        Log.Information(
+            "Found account {AccountId} => {@Account}", 
+            accountId, 
+            result
+        )
+
+        result
+
     let getAccount (accountName : string) =
         Log.Information("Searching for account {AccountName}", accountName)
 
@@ -66,6 +91,24 @@ module Xrm =
 
         result
 
+    let private toSyncedContact (c: XrmProvider.XrmService.contact ) =   
+        let accountName ( account : XrmProvider.XrmService.account option )  =
+            match account with
+            | Some(a) -> a.name
+            | None -> String.Empty
+
+        {
+            FirstName   = c.firstname;
+            LastName    = c.lastname;
+            Company     = accountName( getAccountById c.parentcustomerid );
+            JobTitle    = c.jobtitle;
+            Email       = c.emailaddress1;
+            PhoneMobile = c.mobilephone;
+            PhoneWork   = c.telephone1;
+            Notes       = c.description
+        }
+
+
     let createContact (c : SyncedContact) =
         let ctx = context ()
         let xrmContact = ctx.contactSet.Create()
@@ -78,6 +121,7 @@ module Xrm =
         xrmContact.emailaddress1 <- c.Email
         xrmContact.mobilephone   <- c.PhoneMobile
         xrmContact.telephone1    <- c.PhoneWork
+        xrmContact.description   <- c.Notes
 
         Log.Information(
             "Updating OrganizationService entity {@Contact}", 
@@ -100,3 +144,5 @@ module Xrm =
             )
 
             associateContactToAccount ctx account xrmContact
+
+        toSyncedContact( xrmContact )

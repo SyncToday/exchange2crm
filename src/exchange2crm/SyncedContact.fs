@@ -1,6 +1,9 @@
 ﻿namespace exchange2crm
 
-type SyncedContact = {
+open exchange2crm.Interfaces
+
+type SyncedContact = 
+    {
         FirstName   : string;
         LastName    : string;
         Company     : string;
@@ -10,3 +13,5 @@ type SyncedContact = {
         PhoneWork   : string;
         Notes       : string;
     }
+    interface IContact with
+        member x.Mark() = 0 |> ignore

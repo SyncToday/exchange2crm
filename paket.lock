@@ -14,17 +14,37 @@ NUGET
       FSharpVSPowerTools.Core (1.9.0)
     FSharpVSPowerTools.Core (1.9.0)
       FSharp.Compiler.Service (>= 0.0.90)
+    Microsoft.Azure.KeyVault.Core (1.0.0) - framework: wpv8.0, >= net40
     Microsoft.Bcl (1.1.10)
       Microsoft.Bcl.Build (>= 1.0.14)
     Microsoft.Bcl.Build (1.0.21)
     Microsoft.CrmSdk.CoreAssemblies (5.0.18)
       Microsoft.IdentityModel (>= 6.1.7600.16394) - framework: >= net40
+    Microsoft.Data.Edm (5.6.4)
+    Microsoft.Data.OData (5.6.4) - framework: winv4.5, wpv8.0, >= net40
+      Microsoft.Data.Edm (5.6.4)
+      System.Spatial (5.6.4)
+    Microsoft.Data.Services.Client (5.6.4) - framework: >= net40
+      Microsoft.Data.OData (5.6.4)
     Microsoft.Exchange.WebServices (2.2.0)
     Microsoft.IdentityModel (6.1.7600.16394) - framework: >= net40
     Microsoft.Net.Http (2.2.29)
       Microsoft.Bcl (>= 1.1.10)
       Microsoft.Bcl.Build (>= 1.0.14)
+    Microsoft.Orleans.Client (1.0.9)
+      Microsoft.Orleans.Core (>= 1.0.9)
+      Microsoft.Orleans.OrleansProviders (>= 1.0.9)
+    Microsoft.Orleans.Core (1.0.9)
+    Microsoft.Orleans.OrleansProviders (1.0.9)
+      Microsoft.Orleans.Core (>= 1.0.9)
+      Microsoft.WindowsAzure.ConfigurationManager (>= 2.0.0.0)
+      Newtonsoft.Json (>= 5.0.8)
+      WindowsAzure.Storage (>= 4.2.0.0)
+    Microsoft.Orleans.Templates.Grains (1.0.9)
+      Microsoft.Orleans.Core (>= 1.0.9)
     Microsoft.Web.WebJobs.Publish (1.0.7)
+    Microsoft.WindowsAzure.ConfigurationManager (3.1.0)
+    Newtonsoft.Json (7.0.1)
     NUnit (2.6.4)
     NUnit.Runners (2.6.4)
     NUnitTestAdapter (2.0.0)
@@ -32,6 +52,12 @@ NUGET
       Microsoft.Net.Http
     Serilog (1.5.11)
     SourceLink.Fake (1.1.0)
+    System.Spatial (5.6.4)
+    WindowsAzure.Storage (5.0.2)
+      Microsoft.Azure.KeyVault.Core (>= 1.0.0) - framework: wpv8.0, >= net40
+      Microsoft.Data.OData (>= 5.6.4) - framework: winv4.5, wpv8.1, wpv8.0, >= net40
+      Microsoft.Data.Services.Client (>= 5.6.4) - framework: >= net40
+      Newtonsoft.Json (>= 6.0.8) - framework: wpv8.0, >= net40
 GITHUB
   remote: fsharp/FAKE
   specs:

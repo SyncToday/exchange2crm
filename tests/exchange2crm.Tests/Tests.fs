@@ -2,15 +2,50 @@ module exchange2crm.Tests
 
 open NUnit.Framework
 open exchange2crm
+open System
 
 [<TestFixture>]
 type ``Tests``() = 
+
+    let sourceWithoutCompany = 
+        {
+            FirstName   = "Kaylee";
+            LastName    = "Frye";
+            Company     = "Serenity";
+            JobTitle    = "Mechanic";
+            Email       = "kaylee@serenity.space";
+            PhoneMobile = null;
+            PhoneWork   = null;
+            Notes       = null;
+        }
+
+    let sourceWithCompany = 
+        {
+            FirstName   = "Kaylee";
+            LastName    = "Frye";
+            Company     = "Test";
+            JobTitle    = "Mechanic";
+            Email       = "kaylee@serenity.space";
+            PhoneMobile = null;
+            PhoneWork   = null;
+            Notes       = null;
+        }
 
     [<SetUp>]
     let setup =
         Common.initConsoleLog()
         System.Net.ServicePointManager.ServerCertificateValidationCallback <- 
             (fun _ _ _ _ -> true)
+
+    let AssertAreSame a b =
+        Assert.AreEqual( a.FirstName, b.FirstName )
+        Assert.AreEqual( a.LastName, b.LastName )
+        Assert.AreEqual( a.JobTitle, b.JobTitle )
+        Assert.AreEqual( a.Email, b.Email )
+        Assert.AreEqual( a.PhoneMobile, b.PhoneMobile )
+        Assert.AreEqual( a.PhoneWork, b.PhoneWork )
+        Assert.AreEqual( a.Notes, b.Notes )
+
 
     [<Test>]
     member public x.``there is always a Test account in the CRM`` () =
@@ -26,30 +61,12 @@ type ``Tests``() =
 
     [<Test>]
     member public x.``creating a contact succeeds`` () =
-        Xrm.createContact(
-            {
-                FirstName   = "Kaylee";
-                LastName    = "Frye";
-                Company     = "Serenity";
-                JobTitle    = "Mechanic";
-                Email       = "kaylee@serenity.space";
-                PhoneMobile = null;
-                PhoneWork   = null;
-                Notes       = null;
-            }
-        )
+        let result = Xrm.createContact( sourceWithoutCompany )
+        AssertAreSame result sourceWithoutCompany
+        Assert.AreEqual( result.Company, String.Empty )
 
     [<Test>]
     member public x.``creating a contact with existing account succeeds`` () =
-        Xrm.createContact(
-            {
-                FirstName   = "Kaylee";
-                LastName    = "Frye";
-                Company     = "Test";
-                JobTitle    = "Mechanic";
-                Email       = "kaylee@serenity.space";
-                PhoneMobile = null;
-                PhoneWork   = null;
-                Notes       = null;
-            }
-        )
+        let result = Xrm.createContact( sourceWithCompany )
+        AssertAreSame result sourceWithCompany
+        Assert.AreEqual( result.Company, sourceWithCompany.Company )

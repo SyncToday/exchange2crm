@@ -84,6 +84,11 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\exchange2crm.Interfaces\exchange2crm.Interfaces.csproj">
+      <Name>exchange2crm.Interfaces</Name>
+      <Project>{e2b476e0-e3f2-4159-9087-e282636a3901}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\exchange2crm\exchange2crm.fsproj">
       <Name>exchange2crm</Name>
       <Project>{a4af3195-9bad-4171-8f11-eae722922f5f}</Project>
