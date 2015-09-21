@@ -7,7 +7,7 @@ module Common =
     let initConsoleLog () =
         Log.Logger <- LoggerConfiguration()
             .Destructure.FSharpTypes()
-            .WriteTo.ColoredConsole()
+            .WriteTo.Console()
             .CreateLogger()
         Log.Information( "Application started" )
 
