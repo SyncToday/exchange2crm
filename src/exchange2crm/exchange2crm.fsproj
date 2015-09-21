@@ -72,9 +72,12 @@
       <Paket>True</Paket>
     </Content>
     <Compile Include="Common.fs" />
+    <Compile Include="Seq.fs" />
     <Compile Include="Secret.fs" />
-    <Compile Include="Library.fs" />
-    <None Include="Script.fsx" />
+    <Compile Include="Settings.fs" />
+    <Compile Include="SyncedContact.fs" />
+    <Compile Include="Xrm.fs" />
+    <Compile Include="Exchange.fs" />
     <None Include="paket.references" />
     <None Include="paket.template" />
     <Content Include="App.config" />
