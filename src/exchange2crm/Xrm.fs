@@ -70,6 +70,27 @@ module Xrm =
 
         result
 
+    let getContactById (contactId : Guid) =
+        Log.Information("Searching for contact {ContactId}", contactId)
+
+        let ctx = context()
+        
+        let result = 
+            query {
+                for contact in ctx.contactSet do
+                where (contact.contactid = contactId)
+                select contact
+            } 
+            |> Seq.tryHead
+        
+        Log.Information(
+            "Found contact {ContactId} => {@Contact}", 
+            contactId, 
+            result
+        )
+
+        result
+
     let getAccount (accountName : string) =
         Log.Information("Searching for account {AccountName}", accountName)
 
@@ -92,7 +113,8 @@ module Xrm =
         result
 
     let private toSyncedContact (c: XrmProvider.XrmService.contact ) =   
-        let accountName ( account : XrmProvider.XrmService.account option )  =
+        let accountName ( accounts : IQueryable<XrmProvider.XrmService.account> )  =
+            let account = accounts |> Seq.tryHead 
             match account with
             | Some(a) -> a.name
             | None -> String.Empty
@@ -100,7 +122,7 @@ module Xrm =
         {
             FirstName   = c.firstname;
             LastName    = c.lastname;
-            Company     = accountName( getAccountById c.parentcustomerid );
+            Company     = accountName( c.``Parent of contact_customer_accounts (account)`` );
             JobTitle    = c.jobtitle;
             Email       = c.emailaddress1;
             PhoneMobile = c.mobilephone;
@@ -145,4 +167,4 @@ module Xrm =
 
             associateContactToAccount ctx account xrmContact
 
-        toSyncedContact( xrmContact )
+        toSyncedContact( (getContactById xrmContact.Id).Value )
