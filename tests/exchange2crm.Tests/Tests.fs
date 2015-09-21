@@ -1,19 +1,23 @@
 module exchange2crm.Tests
 
-do
-    Common.initConsoleLog()
-
-open exchange2crm
 open NUnit.Framework
+open exchange2crm
 
-[<Test>]
-let ``hello returns 42`` () =
-  let result = Library.hello 42
-  printfn "%i" result
-  Assert.AreEqual(42,result)
+[<TestFixture>]
+type ``Tests``() = 
 
-[<Test>]
-let ``there are always Test`` () =
-  let result = Library.getCompany "Test"  
-  Assert.IsTrue( result.IsSome )
+    [<SetUp>]
+    let setup =
+      Common.initConsoleLog()
+
+    [<Test>]
+    member public x.``hello returns 42`` () =
+      let result = Library.hello 42
+      printfn "%i" result
+      Assert.AreEqual(42,result)
+
+    [<Test>]
+    member public x.``there is always a Test company`` () =
+      let result = Library.getCompany "Test"  
+      Assert.IsTrue( result.IsSome )
 
