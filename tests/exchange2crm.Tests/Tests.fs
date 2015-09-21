@@ -14,9 +14,9 @@ type ``Tests``() =
             Company     = "Serenity";
             JobTitle    = "Mechanic";
             Email       = "kaylee@serenity.space";
-            PhoneMobile = null;
-            PhoneWork   = null;
-            Notes       = null;
+            PhoneMobile = String.Empty;
+            PhoneWork   = String.Empty;
+            Notes       = String.Empty;
         }
 
     let sourceWithCompany = 
@@ -26,9 +26,9 @@ type ``Tests``() =
             Company     = "Test";
             JobTitle    = "Mechanic";
             Email       = "kaylee@serenity.space";
-            PhoneMobile = null;
-            PhoneWork   = null;
-            Notes       = null;
+            PhoneMobile = String.Empty;
+            PhoneWork   = String.Empty;
+            Notes       = String.Empty;
         }
 
     [<SetUp>]

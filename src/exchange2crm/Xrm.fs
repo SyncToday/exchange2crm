@@ -44,32 +44,7 @@ module Xrm =
                 relationship,
                 related
             )
-
-    let getAccountById (accountId : string) =
-        Log.Information("Searching for account {AccountId}", accountId)
-
-        let ctx = context()
-        
-        let result = 
-            let accountIdG = ref Guid.Empty
-            if Guid.TryParse( accountId, accountIdG ) then
-                query {
-                    for account in ctx.accountSet do
-                    where (account.accountid = accountIdG.Value)
-                    select account
-                } 
-                |> Seq.tryHead
-            else 
-                None
-        
-        Log.Information(
-            "Found account {AccountId} => {@Account}", 
-            accountId, 
-            result
-        )
-
-        result
-
+    
     let getContactById (contactId : Guid) =
         Log.Information("Searching for contact {ContactId}", contactId)
 
@@ -113,16 +88,16 @@ module Xrm =
         result
 
     let private toSyncedContact (c: XrmProvider.XrmService.contact ) =   
-        let accountName ( accounts : IQueryable<XrmProvider.XrmService.account> )  =
-            let account = accounts |> Seq.tryHead 
-            match account with
-            | Some(a) -> a.name
-            | None -> String.Empty
-
+        let parentcustomeridName ( c: XrmProvider.XrmService.contact ) =
+            let entityReference = c.GetAttributeValue<EntityReference>("parentcustomerid")
+            match entityReference with
+            | null -> String.Empty
+            | _ ->  entityReference.Name
+                         
         {
             FirstName   = c.firstname;
             LastName    = c.lastname;
-            Company     = accountName( c.``Parent of contact_customer_accounts (account)`` );
+            Company     = parentcustomeridName( c );
             JobTitle    = c.jobtitle;
             Email       = c.emailaddress1;
             PhoneMobile = c.mobilephone;
