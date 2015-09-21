@@ -6,6 +6,8 @@ nuget EWS-Api-2.0
 nuget FSharp.Configuration
 nuget FSharp.Formatting
 nuget Microsoft.Exchange.WebServices
+nuget Microsoft.Orleans.Client
+nuget Microsoft.Orleans.Templates.Grains
 nuget Microsoft.Web.WebJobs.Publish
 nuget NUnit 
 nuget NUnit.Runners

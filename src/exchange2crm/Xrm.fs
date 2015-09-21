@@ -44,6 +44,27 @@ module Xrm =
                 relationship,
                 related
             )
+    
+    let getContactById (contactId : Guid) =
+        Log.Information("Searching for contact {ContactId}", contactId)
+
+        let ctx = context()
+        
+        let result = 
+            query {
+                for contact in ctx.contactSet do
+                where (contact.contactid = contactId)
+                select contact
+            } 
+            |> Seq.tryHead
+        
+        Log.Information(
+            "Found contact {ContactId} => {@Contact}", 
+            contactId, 
+            result
+        )
+
+        result
 
     let getAccount (accountName : string) =
         Log.Information("Searching for account {AccountName}", accountName)
@@ -66,6 +87,25 @@ module Xrm =
 
         result
 
+    let private toSyncedContact (c: XrmProvider.XrmService.contact ) =   
+        let parentcustomeridName ( c: XrmProvider.XrmService.contact ) =
+            let entityReference = c.GetAttributeValue<EntityReference>("parentcustomerid")
+            match entityReference with
+            | null -> String.Empty
+            | _ ->  entityReference.Name
+                         
+        {
+            FirstName   = c.firstname;
+            LastName    = c.lastname;
+            Company     = parentcustomeridName( c );
+            JobTitle    = c.jobtitle;
+            Email       = c.emailaddress1;
+            PhoneMobile = c.mobilephone;
+            PhoneWork   = c.telephone1;
+            Notes       = c.description
+        }
+
+
     let createContact (c : SyncedContact) =
         let ctx = context ()
         let xrmContact = ctx.contactSet.Create()
@@ -78,6 +118,7 @@ module Xrm =
         xrmContact.emailaddress1 <- c.Email
         xrmContact.mobilephone   <- c.PhoneMobile
         xrmContact.telephone1    <- c.PhoneWork
+        xrmContact.description   <- c.Notes
 
         Log.Information(
             "Updating OrganizationService entity {@Contact}", 
@@ -100,3 +141,5 @@ module Xrm =
             )
 
             associateContactToAccount ctx account xrmContact
+
+        toSyncedContact( (getContactById xrmContact.Id).Value )

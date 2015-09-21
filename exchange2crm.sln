@@ -37,6 +37,10 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "exchange2crm.Tests", "tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "exchange2crm.WebJob", "src\exchange2crm.WebJob\exchange2crm.WebJob.csproj", "{591549B5-F317-428D-80DB-EB027A03F2B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "exchange2crm.Interfaces", "src\exchange2crm.Interfaces\exchange2crm.Interfaces.csproj", "{E2B476E0-E3F2-4159-9087-E282636A3901}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "exchange2crm.Grains", "src\exchange2crm.Grains\exchange2crm.Grains.fsproj", "{D412A539-1E5F-4903-8043-4486B4481183}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +59,14 @@ Global
 		{591549B5-F317-428D-80DB-EB027A03F2B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{591549B5-F317-428D-80DB-EB027A03F2B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{591549B5-F317-428D-80DB-EB027A03F2B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2B476E0-E3F2-4159-9087-E282636A3901}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2B476E0-E3F2-4159-9087-E282636A3901}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2B476E0-E3F2-4159-9087-E282636A3901}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2B476E0-E3F2-4159-9087-E282636A3901}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D412A539-1E5F-4903-8043-4486B4481183}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D412A539-1E5F-4903-8043-4486B4481183}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D412A539-1E5F-4903-8043-4486B4481183}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D412A539-1E5F-4903-8043-4486B4481183}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

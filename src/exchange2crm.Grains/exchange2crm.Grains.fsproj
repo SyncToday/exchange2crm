@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="$(SolutionDir)packages\Microsoft.Orleans.Templates.Grains\build\Microsoft.Orleans.Templates.Grains.props" Condition="Exists('$(SolutionDir)packages\Microsoft.Orleans.Templates.Grains\build\Microsoft.Orleans.Templates.Grains.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>d412a539-1e5f-4903-8043-4486b4481183</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>exchange2crm.Grains</RootNamespace>
+    <AssemblyName>exchange2crm.Grains</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFSharpCoreVersion>4.3.1.0</TargetFSharpCoreVersion>
+    <Name>exchange2crm.Grains</Name>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <Tailcalls>false</Tailcalls>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <DocumentationFile>bin\Debug\FSharpGrains.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <Tailcalls>true</Tailcalls>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <DocumentationFile>bin\Release\FSharpGrains.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
+  </PropertyGroup>
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '11.0'">
+      <PropertyGroup Condition="Exists('$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets')">
+        <FSharpTargetsPath>$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets</FSharpTargetsPath>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\FSharp\Microsoft.FSharp.Targets')">
+        <FSharpTargetsPath>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\FSharp\Microsoft.FSharp.Targets</FSharpTargetsPath>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+  <Import Project="$(FSharpTargetsPath)" />
+  <Import Project="$(SolutionDir)packages\Microsoft.Orleans.Templates.Grains\build\Microsoft.Orleans.Templates.Grains.targets" Condition="Exists('$(SolutionDir)packages\Microsoft.Orleans.Templates.Grains\build\Microsoft.Orleans.Templates.Grains.targets')" />
+  <Import Project="..\..\packages\Microsoft.Orleans.Templates.Grains\build\Microsoft.Orleans.Templates.Grains.props" Condition="Exists('..\..\packages\Microsoft.Orleans.Templates.Grains\build\Microsoft.Orleans.Templates.Grains.props')" Label="Paket" />
+  <Import Project="..\..\packages\Microsoft.Orleans.Templates.Grains\build\Microsoft.Orleans.Templates.Grains.targets" Condition="Exists('..\..\packages\Microsoft.Orleans.Templates.Grains\build\Microsoft.Orleans.Templates.Grains.targets')" Label="Paket" />
+  <ItemGroup>
+    <Content Include="Properties\orleans.codegen.cs">
+      <Paket>True</Paket>
+    </Content>
+    <Compile Include="importExchangeContactToCRM.fs" />
+    <Compile Include="GeneratedFiles\orleans.codegen.fs" />
+    <None Include="Script.fsx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\exchange2crm\exchange2crm.fsproj">
+      <Name>exchange2crm</Name>
+      <Project>{a4af3195-9bad-4171-8f11-eae722922f5f}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <Reference Include="mscorlib" />
+    <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Orleans">
+      <Private>False</Private>
+      <HintPath>$(SolutionDir)packages\Microsoft.Orleans.Core\lib\net45\Orleans.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <ProjectReference Include="..\exchange2crm.Interfaces\exchange2crm.Interfaces.csproj">
+      <Name>exchange2crm.Interfaces</Name>
+      <Project>{e2b476e0-e3f2-4159-9087-e282636a3901}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
