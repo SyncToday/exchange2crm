@@ -42,6 +42,8 @@ NUGET
       WindowsAzure.Storage (>= 4.2.0.0)
     Microsoft.Orleans.Templates.Grains (1.0.9)
       Microsoft.Orleans.Core (>= 1.0.9)
+    Microsoft.Orleans.Templates.Interfaces (1.0.9)
+      Microsoft.Orleans.Core (>= 1.0.9)
     Microsoft.Web.WebJobs.Publish (1.0.7)
     Microsoft.WindowsAzure.ConfigurationManager (3.1.0)
     Newtonsoft.Json (7.0.1)

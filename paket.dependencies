@@ -8,6 +8,7 @@ nuget FSharp.Formatting
 nuget Microsoft.Exchange.WebServices
 nuget Microsoft.Orleans.Client
 nuget Microsoft.Orleans.Templates.Grains
+nuget Microsoft.Orleans.Templates.Interfaces
 nuget Microsoft.Web.WebJobs.Publish
 nuget NUnit 
 nuget NUnit.Runners

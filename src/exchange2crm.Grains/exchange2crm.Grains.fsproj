@@ -50,8 +50,6 @@
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
   <Import Project="$(SolutionDir)packages\Microsoft.Orleans.Templates.Grains\build\Microsoft.Orleans.Templates.Grains.targets" Condition="Exists('$(SolutionDir)packages\Microsoft.Orleans.Templates.Grains\build\Microsoft.Orleans.Templates.Grains.targets')" />
-  <Import Project="..\..\packages\Microsoft.Orleans.Templates.Grains\build\Microsoft.Orleans.Templates.Grains.props" Condition="Exists('..\..\packages\Microsoft.Orleans.Templates.Grains\build\Microsoft.Orleans.Templates.Grains.props')" Label="Paket" />
-  <Import Project="..\..\packages\Microsoft.Orleans.Templates.Grains\build\Microsoft.Orleans.Templates.Grains.targets" Condition="Exists('..\..\packages\Microsoft.Orleans.Templates.Grains\build\Microsoft.Orleans.Templates.Grains.targets')" Label="Paket" />
   <ItemGroup>
     <Content Include="Properties\orleans.codegen.cs">
       <Paket>True</Paket>
@@ -83,4 +81,6 @@
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="..\..\packages\Microsoft.Orleans.Templates.Grains\build\Microsoft.Orleans.Templates.Grains.props" Condition="Exists('..\..\packages\Microsoft.Orleans.Templates.Grains\build\Microsoft.Orleans.Templates.Grains.props')" Label="Paket" />
+  <Import Project="..\..\packages\Microsoft.Orleans.Templates.Grains\build\Microsoft.Orleans.Templates.Grains.targets" Condition="Exists('..\..\packages\Microsoft.Orleans.Templates.Grains\build\Microsoft.Orleans.Templates.Grains.targets')" Label="Paket" />
 </Project>
