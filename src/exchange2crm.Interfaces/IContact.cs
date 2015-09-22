@@ -13,5 +13,6 @@ namespace exchange2crm.Interfaces
         String PhoneMobile { get; }
         String PhoneWork { get; }
         String Notes { get; }
+        String UniqueId { get; }
     }
 }

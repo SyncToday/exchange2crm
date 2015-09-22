@@ -12,14 +12,15 @@ type SyncedContact =
         PhoneMobile : string;
         PhoneWork   : string;
         Notes       : string;
+        UniqueId    : string;
     }
     interface IContact with
-        member x.FirstName = x.FirstName
-        member x.LastName = x.LastName
-        member x.Company = x.Company
-        member x.JobTitle = x.JobTitle
-        member x.Email = x.Email
+        member x.FirstName   = x.FirstName
+        member x.LastName    = x.LastName
+        member x.Company     = x.Company
+        member x.JobTitle    = x.JobTitle
+        member x.Email       = x.Email
         member x.PhoneMobile = x.PhoneMobile
-        member x.PhoneWork = x.PhoneWork
-        member x.Notes = x.Notes
-
+        member x.PhoneWork   = x.PhoneWork
+        member x.Notes       = x.Notes
+        member x.UniqueId    = x.UniqueId

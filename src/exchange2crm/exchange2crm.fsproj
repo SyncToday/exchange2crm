@@ -72,6 +72,7 @@
       <Paket>True</Paket>
     </Content>
     <Compile Include="Common.fs" />
+    <Compile Include="Async.fs" />
     <Compile Include="Seq.fs" />
     <Compile Include="Secret.fs" />
     <Compile Include="Settings.fs" />

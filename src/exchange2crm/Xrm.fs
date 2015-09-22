@@ -63,6 +63,7 @@ module Xrm =
             PhoneMobile = c.mobilephone;
             PhoneWork   = c.telephone1;
             Notes       = c.description
+            UniqueId    = null
         }
     
     let getContactById (contactId : Guid) =
@@ -137,7 +138,11 @@ module Xrm =
 
         xrmContact.Id <- ctx.OrganizationService.Create(xrmContact)
 
-        let account = getAccount c.Company
+        let account = 
+            match c.Company with
+            | null    -> None
+            | ""      -> None
+            | company -> getAccount company
 
         match account with
         | None -> 

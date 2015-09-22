@@ -6,11 +6,11 @@ open Orleans
 open exchange2crm.Interfaces
 open exchange2crm
 
-type ImportSingleContact() = 
+type SaveSingleContact() = 
     inherit Orleans.Grain()
 
-    interface IImportSingleContact with
+    interface ISaveSingleContact with
         member this.Import (contact : IContact) =
             Task.Factory.StartNew(
-                fun () -> Xrm.createContact(contact)
+                fun () -> Xrm.createContact(contact) |> ignore
             )

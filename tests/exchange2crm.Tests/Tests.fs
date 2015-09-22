@@ -18,6 +18,7 @@ type ``Tests``() =
             PhoneMobile = String.Empty;
             PhoneWork   = String.Empty;
             Notes       = String.Empty;
+            UniqueId    = null;
         } :> IContact
 
     let sourceWithCompany = 
@@ -30,6 +31,7 @@ type ``Tests``() =
             PhoneMobile = String.Empty;
             PhoneWork   = String.Empty;
             Notes       = String.Empty;
+            UniqueId    = null;
         } :> IContact
 
     [<SetUp>]
@@ -57,7 +59,7 @@ type ``Tests``() =
 
     [<Test>]
     member public x.``there are always contacts in the Exchange server`` () =
-        let result = Exchange.getContacts |> Seq.toList
+        let result = Exchange.getContacts () |> Seq.toList
         Assert.IsFalse( result.IsEmpty )
 
     [<Test>]
