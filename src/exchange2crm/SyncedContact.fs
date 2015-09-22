@@ -14,4 +14,12 @@ type SyncedContact =
         Notes       : string;
     }
     interface IContact with
-        member x.Mark() = 0 |> ignore
+        member x.FirstName = x.FirstName
+        member x.LastName = x.LastName
+        member x.Company = x.Company
+        member x.JobTitle = x.JobTitle
+        member x.Email = x.Email
+        member x.PhoneMobile = x.PhoneMobile
+        member x.PhoneWork = x.PhoneWork
+        member x.Notes = x.Notes
+

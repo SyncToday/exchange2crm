@@ -54,9 +54,9 @@
     <Content Include="Properties\orleans.codegen.cs">
       <Paket>True</Paket>
     </Content>
-    <Compile Include="importExchangeContactToCRM.fs" />
+    <Compile Include="ImportAllContacts.fs" />
     <Compile Include="GeneratedFiles\orleans.codegen.fs" />
-    <None Include="Script.fsx" />
+    <Compile Include="ImportSingleContact.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\exchange2crm\exchange2crm.fsproj">
