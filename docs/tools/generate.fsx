@@ -99,12 +99,15 @@ let libDirs =
 // Build API reference from XML comments
 let buildReference () =
   CleanDir (output @@ "reference")
-  MetadataFormat.Generate
-    ( binaries, output @@ "reference", layoutRootsAll.["en"],
-      parameters = ("root", root)::info,
-      sourceRepo = githubLink @@ "tree/master",
-      sourceFolder = __SOURCE_DIRECTORY__ @@ ".." @@ "..",
-      publicOnly = true,libDirs = libDirs )
+  try 
+      MetadataFormat.Generate
+        ( binaries, output @@ "reference", layoutRootsAll.["en"],
+          parameters = ("root", root)::info,
+          sourceRepo = githubLink @@ "tree/master",
+          sourceFolder = __SOURCE_DIRECTORY__ @@ ".." @@ "..",
+          publicOnly = true,libDirs = libDirs )
+  with
+  | ex -> printfn "*** FAIL: buildReference failed %A" ex
 
 // Build documentation from `fsx` and `md` files in `docs/content`
 let buildDocumentation () =
