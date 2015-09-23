@@ -44,6 +44,27 @@ module Xrm =
                 relationship,
                 related
             )
+
+    let private toSyncedContact (c : XrmProvider.XrmService.contact) =
+        let entityReference = 
+            c.GetAttributeValue<EntityReference>("parentcustomerid")
+            
+        let parentCustomerIdName =
+            match entityReference with
+            | null -> String.Empty
+            | er ->  er.Name
+                         
+        {
+            FirstName   = c.firstname;
+            LastName    = c.lastname;
+            Company     = parentCustomerIdName;
+            JobTitle    = c.jobtitle;
+            Email       = c.emailaddress1;
+            PhoneMobile = c.mobilephone;
+            PhoneWork   = c.telephone1;
+            Notes       = c.description
+            UniqueId    = null
+        }
     
     let getContactById (contactId : Guid) =
         Log.Information("Searching for contact {ContactId}", contactId)
@@ -58,13 +79,21 @@ module Xrm =
             } 
             |> Seq.tryHead
         
-        Log.Information(
-            "Found contact {ContactId} => {@Contact}", 
-            contactId, 
-            result
-        )
+        match result with
+        | Some(r) -> 
+            Log.Information(
+                "Found contact {ContactId} => {@Contact}", 
+                contactId, 
+                result
+            )
+            Some(toSyncedContact r)
 
-        result
+        | None -> 
+            Log.Information(
+                "Contact {ContactId} not found", 
+                contactId
+            )
+            None
 
     let getAccount (accountName : string) =
         Log.Information("Searching for account {AccountName}", accountName)
@@ -87,26 +116,8 @@ module Xrm =
 
         result
 
-    let private toSyncedContact (c: XrmProvider.XrmService.contact ) =   
-        let parentcustomeridName ( c: XrmProvider.XrmService.contact ) =
-            let entityReference = c.GetAttributeValue<EntityReference>("parentcustomerid")
-            match entityReference with
-            | null -> String.Empty
-            | _ ->  entityReference.Name
-                         
-        {
-            FirstName   = c.firstname;
-            LastName    = c.lastname;
-            Company     = parentcustomeridName( c );
-            JobTitle    = c.jobtitle;
-            Email       = c.emailaddress1;
-            PhoneMobile = c.mobilephone;
-            PhoneWork   = c.telephone1;
-            Notes       = c.description
-        }
 
-
-    let createContact (c : SyncedContact) =
+    let createContact (c : Interfaces.IContact) =
         let ctx = context ()
         let xrmContact = ctx.contactSet.Create()
 
@@ -127,7 +138,11 @@ module Xrm =
 
         xrmContact.Id <- ctx.OrganizationService.Create(xrmContact)
 
-        let account = getAccount c.Company
+        let account = 
+            match c.Company with
+            | null    -> None
+            | ""      -> None
+            | company -> getAccount company
 
         match account with
         | None -> 
@@ -142,4 +157,4 @@ module Xrm =
 
             associateContactToAccount ctx account xrmContact
 
-        toSyncedContact( (getContactById xrmContact.Id).Value )
+        (getContactById xrmContact.Id).Value :> Interfaces.IContact
