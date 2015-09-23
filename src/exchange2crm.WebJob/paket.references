@@ -8,3 +8,5 @@ Microsoft.WindowsAzure.ConfigurationManager
 Newtonsoft.Json
 System.Spatial
 WindowsAzure.Storage
+Microsoft.Orleans.Core
+Microsoft.Orleans.OrleansRuntime

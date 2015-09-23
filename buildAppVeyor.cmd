@@ -3,6 +3,7 @@ cls
 
 ECHO F| xcopy "tests\exchange2crm.Tests\appSettings.sample.config" "tests\exchange2crm.Tests\appSettings.config" /i /d /y
 ECHO F|xcopy "src\exchange2crm\Secret.Sample.fs" "src\exchange2crm\Secret.fs" /i /d /y
-ECHO F|xcopy "src\exchange2crm.WebJob\ConnectionStrings.Sample.config" "src\exchange2crm.WebJob\ConnectionStrings.config" /i /d /y
+ECHO F|xcopy "src\exchange2crm.WebJob\ConnectionStrings.Sample.config" "src\exchange2crm.WebJob\ConnectionStrings.config" ECHO F| xcopy "tests\exchange2crm.Tests\appSettings.sample.config" "src\exchange2crm.WebJob\appSettings.config" /i /d /y
+/i /d /y
 
 build.cmd

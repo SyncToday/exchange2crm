@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System;using System.IO;
 using Microsoft.Azure.WebJobs;
 
 namespace exchange2crm.WebJob
