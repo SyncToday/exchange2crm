@@ -26,10 +26,10 @@ NUGET
     Microsoft.CrmSdk.CoreAssemblies (5.0.18)
       Microsoft.IdentityModel (>= 6.1.7600.16394) - framework: >= net40
     Microsoft.Data.Edm (5.6.4)
-    Microsoft.Data.OData (5.6.4) - framework: winv4.5, wpv8.0, >= net40
+    Microsoft.Data.OData (5.6.4)
       Microsoft.Data.Edm (5.6.4)
       System.Spatial (5.6.4)
-    Microsoft.Data.Services.Client (5.6.4) - framework: >= net40
+    Microsoft.Data.Services.Client (5.6.4)
       Microsoft.Data.OData (5.6.4)
     Microsoft.Exchange.WebServices (2.2.0)
     Microsoft.IdentityModel (6.1.7600.16394) - framework: >= net40
