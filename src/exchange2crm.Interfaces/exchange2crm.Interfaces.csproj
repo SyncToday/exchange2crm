@@ -188,6 +188,8 @@
       </ItemGroup>
     </When>
   </Choose>
+  <Import Project="..\..\packages\Microsoft.Orleans.Templates.Interfaces\build\Microsoft.Orleans.Templates.Interfaces.props" Condition="Exists('..\..\packages\Microsoft.Orleans.Templates.Interfaces\build\Microsoft.Orleans.Templates.Interfaces.props')" Label="Paket" />
+  <Import Project="..\..\packages\Microsoft.Orleans.Templates.Interfaces\build\Microsoft.Orleans.Templates.Interfaces.targets" Condition="Exists('..\..\packages\Microsoft.Orleans.Templates.Interfaces\build\Microsoft.Orleans.Templates.Interfaces.targets')" Label="Paket" />
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v4.0' Or $(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')">
       <ItemGroup>
