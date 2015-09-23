@@ -11,6 +11,8 @@ nuget Microsoft.Data.OData
 nuget Microsoft.Data.Services.Client
 nuget Microsoft.Exchange.WebServices
 nuget Microsoft.Orleans.Client
+nuget Microsoft.Orleans.Core
+nuget Microsoft.Orleans.OrleansRuntime
 nuget Microsoft.Orleans.Templates.Grains
 nuget Microsoft.Orleans.Templates.Interfaces
 nuget Microsoft.Web.WebJobs.Publish

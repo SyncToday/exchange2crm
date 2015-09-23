@@ -2,6 +2,7 @@ module exchange2crm.Tests
 
 open NUnit.Framework
 open exchange2crm
+open exchange2crm.Interfaces
 open System
 
 [<TestFixture>]
@@ -17,7 +18,8 @@ type ``Tests``() =
             PhoneMobile = String.Empty;
             PhoneWork   = String.Empty;
             Notes       = String.Empty;
-        }
+            UniqueId    = null;
+        } :> IContact
 
     let sourceWithCompany = 
         {
@@ -29,7 +31,8 @@ type ``Tests``() =
             PhoneMobile = String.Empty;
             PhoneWork   = String.Empty;
             Notes       = String.Empty;
-        }
+            UniqueId    = null;
+        } :> IContact
 
     [<SetUp>]
     let setup =
@@ -37,14 +40,14 @@ type ``Tests``() =
         System.Net.ServicePointManager.ServerCertificateValidationCallback <- 
             (fun _ _ _ _ -> true)
 
-    let AssertAreSame a b =
-        Assert.AreEqual( a.FirstName, b.FirstName )
-        Assert.AreEqual( a.LastName, b.LastName )
-        Assert.AreEqual( a.JobTitle, b.JobTitle )
-        Assert.AreEqual( a.Email, b.Email )
-        Assert.AreEqual( a.PhoneMobile, b.PhoneMobile )
-        Assert.AreEqual( a.PhoneWork, b.PhoneWork )
-        Assert.AreEqual( a.Notes, b.Notes )
+    let AssertAreEqual (a : IContact) (b : IContact) =
+        Assert.AreEqual(a.FirstName, b.FirstName)
+        Assert.AreEqual(a.LastName, b.LastName)
+        Assert.AreEqual(a.JobTitle, b.JobTitle)
+        Assert.AreEqual(a.Email, b.Email)
+        Assert.AreEqual(a.PhoneMobile, b.PhoneMobile)
+        Assert.AreEqual(a.PhoneWork, b.PhoneWork)
+        Assert.AreEqual(a.Notes, b.Notes)
 
 
     [<Test>]
@@ -56,17 +59,17 @@ type ``Tests``() =
 
     [<Test>]
     member public x.``there are always contacts in the Exchange server`` () =
-        let result = Exchange.getContacts |> Seq.toList
+        let result = Exchange.getContacts () |> Seq.toList
         Assert.IsFalse( result.IsEmpty )
 
     [<Test>]
     member public x.``creating a contact succeeds`` () =
         let result = Xrm.createContact( sourceWithoutCompany )
-        AssertAreSame result sourceWithoutCompany
+        AssertAreEqual result sourceWithoutCompany
         Assert.AreEqual( result.Company, String.Empty )
 
     [<Test>]
     member public x.``creating a contact with existing account succeeds`` () =
         let result = Xrm.createContact( sourceWithCompany )
-        AssertAreSame result sourceWithCompany
+        AssertAreEqual result sourceWithCompany
         Assert.AreEqual( result.Company, sourceWithCompany.Company )

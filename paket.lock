@@ -45,6 +45,8 @@ NUGET
       Microsoft.WindowsAzure.ConfigurationManager (>= 2.0.0.0)
       Newtonsoft.Json (>= 5.0.8)
       WindowsAzure.Storage (>= 4.2.0.0)
+    Microsoft.Orleans.OrleansRuntime (1.0.9)
+      Microsoft.Orleans.Core (>= 1.0.9)
     Microsoft.Orleans.Templates.Grains (1.0.9)
       Microsoft.Orleans.Core (>= 1.0.9)
     Microsoft.Orleans.Templates.Interfaces (1.0.9)
