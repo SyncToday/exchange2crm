@@ -15,6 +15,11 @@ NUGET
     FSharpVSPowerTools.Core (1.9.0)
       FSharp.Compiler.Service (>= 0.0.90)
     Microsoft.Azure.KeyVault.Core (1.0.0) - framework: wpv8.0, >= net40
+    Microsoft.Azure.WebJobs (1.0.1)
+      Microsoft.Azure.WebJobs.Core (1.0.1)
+      Newtonsoft.Json (>= 6.0.4)
+      WindowsAzure.Storage (>= 4.0.1)
+    Microsoft.Azure.WebJobs.Core (1.0.1)
     Microsoft.Bcl (1.1.10)
       Microsoft.Bcl.Build (>= 1.0.14)
     Microsoft.Bcl.Build (1.0.21)
@@ -63,5 +68,5 @@ NUGET
 GITHUB
   remote: fsharp/FAKE
   specs:
-    modules/Octokit/Octokit.fsx (78394818c15fe91416b6ba94d40ea5ffb0f487b1)
+    modules/Octokit/Octokit.fsx (448a0e59aa1381714d045bf81c3ab5692aad6259)
       Octokit
