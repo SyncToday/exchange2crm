@@ -4,6 +4,7 @@ nuget Destructurama.FSharp
 nuget DynamicsCRMProvider
 nuget EWS-Api-2.0
 nuget FSharp.Configuration
+nuget FSharp.Core
 nuget FSharp.Formatting
 nuget Microsoft.Azure.WebJobs
 nuget Microsoft.Data.Edm
@@ -22,6 +23,7 @@ nuget NUnit
 nuget NUnit.Runners
 nuget FAKE
 nuget NUnitTestAdapter
+nuget Serilog
 nuget SourceLink.Fake
 nuget System.Spatial
 nuget WindowsAzure.Storage

@@ -10,3 +10,4 @@ System.Spatial
 WindowsAzure.Storage
 Microsoft.Orleans.Core
 Microsoft.Orleans.OrleansRuntime
+FSharp.Core

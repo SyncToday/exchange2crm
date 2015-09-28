@@ -196,3 +196,5 @@ Secret.fs
 orleans.codegen.cs
 orleans.codegen.fs
 FSharp.Formatting.svclog
+AssemblyInfo.*
+

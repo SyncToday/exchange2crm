@@ -17,3 +17,14 @@ module Common =
             .WriteTo.TextWriter( writer )
             .CreateLogger()
         Log.Information( "Application started" )
+
+    let run ( anyFunc, methodName : string ) =
+        try 
+            Log.Information("{MethodName} entered", [| methodName |])
+            anyFunc()
+            Log.Information("{MethodName} successfully done", [| methodName |])
+        with 
+            | ex -> 
+                Log.Fatal( "{MethodName} failed with {@Exception}", [| methodName, ex |] )
+                reraise()
+

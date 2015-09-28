@@ -9,6 +9,9 @@ open exchange2crm
 type SaveSingleContact() = 
     inherit Orleans.Grain()
 
+    member this.Import2 (contact : IContact) =
+        Xrm.createContact(contact) |> ignore
+
     interface ISaveSingleContact with
         member this.Import (contact : IContact) =
             Task.Factory.StartNew(

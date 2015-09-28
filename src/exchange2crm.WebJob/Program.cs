@@ -1,8 +1,11 @@
-﻿using System;using Orleans;
+﻿using System;
+using Orleans;
 using Orleans.Runtime.Host;
 using System.Net;
 using Orleans.Runtime.Configuration;
 using exchange2crm.Interfaces;
+using exchange2crm.Grains;
+
 namespace exchange2crm.WebJob
 {
     // To learn more about Microsoft Azure WebJobs SDK, please see http://go.microsoft.com/fwlink/?LinkID=320976
@@ -15,35 +18,8 @@ namespace exchange2crm.WebJob
         private static void Main()
         {
             Common.initConsoleLog();
-
-            var appConfig =
-                typeof(Program).Assembly.GetName().Name + ".exe.config";
-
-            var hostDomain = AppDomain.CreateDomain("OrleansHost", null,
-                new AppDomainSetup()
-                {
-                    AppDomainInitializer = InitSilo,
-                    ConfigurationFile = appConfig
-                });
-
-
-            var clientConfig = new ClientConfiguration();
-            clientConfig.Gateways.Add(
-                new IPEndPoint(IPAddress.Loopback, 30000)
-            );
-
-            GrainClient.Initialize(clientConfig);
-
-            var importExchange =
-                GrainClient.GrainFactory.GetGrain<IImportExchangeContacts>(0L);
-
-            importExchange.Import().Wait();
-
-            Console.WriteLine("Orleans Silo is running.");
-            Console.WriteLine("Press any key to terminate...");
-            Console.ReadKey(intercept: true);
-
-            hostDomain.DoCallBack(ShutdownSilo);
+            var importExchange = new ImportExchangeContacts();
+            importExchange.Run();
         }
 
         private static void InitSilo(String[] args)
