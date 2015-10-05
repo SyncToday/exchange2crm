@@ -3,6 +3,7 @@ module exchange2crm.Tests
 open NUnit.Framework
 open exchange2crm
 open exchange2crm.Interfaces
+open exchange2crm.Grains
 open System
 
 let randomString (l : int) =
@@ -63,6 +64,19 @@ type ``Tests``() =
             UniqueId    = null;
         } :> IContact
 
+    let sourceWithCompanyRandom = 
+        {
+            FirstName   = randomString(6);
+            LastName    = randomString(10);
+            Company     = "Test";
+            JobTitle    = "Mechanic";
+            Email       = "kaylee@serenity.space";
+            PhoneMobile = randomNumber;
+            PhoneWork   = randomNumber;
+            Notes       = randomString(30);
+            UniqueId    = null;
+        } :> IContact
+
     [<SetUp>]
     let setup =
         Common.initConsoleLog()
@@ -78,6 +92,13 @@ type ``Tests``() =
         Assert.AreEqual(a.PhoneWork, b.PhoneWork)
         Assert.AreEqual(a.Notes, b.Notes)
     
+    [<Test>]
+    member public x.``Create new random contact in the Exchange server`` () =
+        let c = sourceWithoutCompanyRandom
+        let result = Exchange.createContact(c)        
+        Assert.IsFalse( result.UniqueId.Equals(String.Empty))        
+        let importExchange = new ImportExchangeContacts();
+        importExchange.Run()
 
     [<Test>]
     member public x.``there is always a Test account in the CRM`` () =
@@ -91,20 +112,26 @@ type ``Tests``() =
         let result = Exchange.getContacts () |> Seq.toList
         Assert.IsFalse( result.IsEmpty )
 
-    [<Test>]
-    member public x.``creating a contact succeeds`` () =
-        let result = Xrm.createContact( sourceWithoutCompany )
-        AssertAreEqual result sourceWithoutCompany
-        Assert.AreEqual( result.Company, String.Empty )
+//    [<Test>]
+//    member public x.``creating a contact succeeds`` () =
+//        let result = Xrm.createContact( sourceWithoutCompany )
+//        AssertAreEqual result sourceWithoutCompany
+//        Assert.AreEqual( result.Company, String.Empty )
+//
+//    [<Test>]
+//    member public x.``creating a contact with existing account succeeds`` () =
+//        let result = Xrm.createContact( sourceWithCompany )
+//        AssertAreEqual result sourceWithCompany
+//        Assert.AreEqual( result.Company, sourceWithCompany.Company )
 
     [<Test>]
-    member public x.``creating a contact with existing account succeeds`` () =
-        let result = Xrm.createContact( sourceWithCompany )
-        AssertAreEqual result sourceWithCompany
-        Assert.AreEqual( result.Company, sourceWithCompany.Company )
-
-    [<Test>]
-    member public x.``creating a random contact succeeds`` () =
+    member public x.``creating a random contact without company succeeds`` () =
         let result = Xrm.createContact( sourceWithoutCompanyRandom )
         AssertAreEqual result sourceWithoutCompanyRandom
         Assert.AreEqual( result.Company, String.Empty )
+
+    [<Test>]
+    member public x.``creating a random contact with existing account succeeds`` () =
+        let result = Xrm.createContact( sourceWithCompanyRandom )
+        AssertAreEqual result sourceWithCompanyRandom
+        Assert.AreEqual( result.Company, sourceWithCompanyRandom.Company )

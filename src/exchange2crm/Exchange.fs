@@ -2,6 +2,7 @@
 open exchange2crm.Interfaces
 open Microsoft.Exchange.WebServices.Data
 open Serilog
+open System 
 
 module Exchange =
 
@@ -46,6 +47,38 @@ module Exchange =
             Notes       = c.Notes
             UniqueId    = c.Id.UniqueId
         }
+
+    let private setEmail( r : Contact, emailAddress : string, key : EmailAddressKey ) =     
+        let mutable oldEmailAddress : EmailAddress = null
+        if r.EmailAddresses.TryGetValue(key, &oldEmailAddress ) then
+            r.EmailAddresses.[key] <- null
+        if not (String.IsNullOrWhiteSpace(emailAddress)) then
+            r.EmailAddresses.[key] <- EmailAddress(emailAddress)
+
+    let private setPhone( r : Contact, number : string, key : PhoneNumberKey ) =     
+        let mutable oldNumber : string = null
+        if r.PhoneNumbers.TryGetValue(key, &oldNumber ) then
+            r.PhoneNumbers.[key] <- null
+        if not ( String.IsNullOrWhiteSpace(number) ) then
+            r.PhoneNumbers.[key] <- number
+
+    let createContact (contact : IContact) =         
+        let service = getService ()        
+        let folder = getContactsFolder service
+        let app = new Contact(service)  
+
+        app.CompanyName <- contact.Company
+        setEmail(app, contact.Email, EmailAddressKey.EmailAddress1)
+        app.GivenName <- contact.FirstName
+        app.Surname <- contact.LastName
+        app.JobTitle <- contact.JobTitle        
+        
+        setPhone( app, contact.PhoneMobile,  PhoneNumberKey.MobilePhone )
+        setPhone( app, contact.PhoneWork,  PhoneNumberKey.BusinessPhone )        
+        app.Save(folder.Id)
+
+        app.Id
+        
 
     let getContacts () =
         let service = getService ()

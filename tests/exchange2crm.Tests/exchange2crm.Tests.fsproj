@@ -79,11 +79,19 @@
     <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <Private>True</Private>
     </Reference>
+    <Reference Include="Orleans">
+      <HintPath>..\..\packages\Microsoft.Orleans.Core\lib\net45\Orleans.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\exchange2crm.Grains\exchange2crm.Grains.fsproj">
+      <Name>exchange2crm.Grains</Name>
+      <Project>{d412a539-1e5f-4903-8043-4486b4481183}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\exchange2crm.Interfaces\exchange2crm.Interfaces.csproj">
       <Name>exchange2crm.Interfaces</Name>
       <Project>{e2b476e0-e3f2-4159-9087-e282636a3901}</Project>
