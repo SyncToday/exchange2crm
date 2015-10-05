@@ -11,6 +11,7 @@ nuget Microsoft.Data.Edm
 nuget Microsoft.Data.OData
 nuget Microsoft.Data.Services.Client
 nuget Microsoft.Exchange.WebServices
+nuget Microsoft.IdentityModel
 nuget Microsoft.Orleans.Client
 nuget Microsoft.Orleans.Core
 nuget Microsoft.Orleans.OrleansRuntime

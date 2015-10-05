@@ -11,3 +11,4 @@ WindowsAzure.Storage
 Microsoft.Orleans.Core
 Microsoft.Orleans.OrleansRuntime
 FSharp.Core
+Microsoft.IdentityModel
