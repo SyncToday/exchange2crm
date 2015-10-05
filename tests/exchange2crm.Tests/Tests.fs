@@ -5,6 +5,21 @@ open exchange2crm
 open exchange2crm.Interfaces
 open System
 
+let randomString (l : int) =
+        let rand = System.Random()
+        let chars = "ABCDEFGHIJKLMNOPQRSTUVWUXYZabcdefghijklmnopqrstuvwuxyz0123456789"
+
+        let randomChars = [|for i in 0..l-1 -> chars.[rand.Next(chars.Length)]|]
+        new System.String(randomChars)
+
+let randomNumber =
+        let rand = System.Random()
+        let chars = "0123456789"
+
+        let randomChars = [|for i in 0..8 -> chars.[rand.Next(chars.Length)]|]
+        new System.String(randomChars)
+
+
 [<TestFixture>]
 type ``Tests``() = 
 
@@ -20,6 +35,20 @@ type ``Tests``() =
             Notes       = String.Empty;
             UniqueId    = null;
         } :> IContact
+
+    let sourceWithoutCompanyRandom = 
+        {
+            FirstName   = randomString(6);
+            LastName    = randomString(10);
+            Company     = "Serenity";
+            JobTitle    = "Mechanic";
+            Email       = "kaylee@serenity.space";
+            PhoneMobile = randomNumber;
+            PhoneWork   = randomNumber;
+            Notes       = randomString(30);
+            UniqueId    = null;
+        } :> IContact
+
 
     let sourceWithCompany = 
         {
@@ -48,7 +77,7 @@ type ``Tests``() =
         Assert.AreEqual(a.PhoneMobile, b.PhoneMobile)
         Assert.AreEqual(a.PhoneWork, b.PhoneWork)
         Assert.AreEqual(a.Notes, b.Notes)
-
+    
 
     [<Test>]
     member public x.``there is always a Test account in the CRM`` () =
@@ -73,3 +102,9 @@ type ``Tests``() =
         let result = Xrm.createContact( sourceWithCompany )
         AssertAreEqual result sourceWithCompany
         Assert.AreEqual( result.Company, sourceWithCompany.Company )
+
+    [<Test>]
+    member public x.``creating a random contact succeeds`` () =
+        let result = Xrm.createContact( sourceWithoutCompanyRandom )
+        AssertAreEqual result sourceWithoutCompanyRandom
+        Assert.AreEqual( result.Company, String.Empty )
