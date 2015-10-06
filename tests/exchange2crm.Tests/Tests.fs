@@ -24,19 +24,6 @@ let randomNumber =
 [<TestFixture>]
 type ``Tests``() = 
 
-    let sourceWithoutCompany = 
-        {
-            FirstName   = "Kaylee";
-            LastName    = "Frye";
-            Company     = "Serenity";
-            JobTitle    = "Mechanic";
-            Email       = "kaylee@serenity.space";
-            PhoneMobile = String.Empty;
-            PhoneWork   = String.Empty;
-            Notes       = String.Empty;
-            UniqueId    = null;
-        } :> IContact
-
     let sourceWithoutCompanyRandom = 
         {
             FirstName   = randomString(6);
@@ -47,20 +34,6 @@ type ``Tests``() =
             PhoneMobile = randomNumber;
             PhoneWork   = randomNumber;
             Notes       = randomString(30);
-            UniqueId    = null;
-        } :> IContact
-
-
-    let sourceWithCompany = 
-        {
-            FirstName   = "Kaylee";
-            LastName    = "Frye";
-            Company     = "Test";
-            JobTitle    = "Mechanic";
-            Email       = "kaylee@serenity.space";
-            PhoneMobile = String.Empty;
-            PhoneWork   = String.Empty;
-            Notes       = String.Empty;
             UniqueId    = null;
         } :> IContact
 
@@ -105,24 +78,10 @@ type ``Tests``() =
         let result = Xrm.getAccount "Test"  
         Assert.IsTrue( result.IsSome )
 
-
-
     [<Test>]
     member public x.``there are always contacts in the Exchange server`` () =
         let result = Exchange.getContacts () |> Seq.toList
         Assert.IsFalse( result.IsEmpty )
-
-//    [<Test>]
-//    member public x.``creating a contact succeeds`` () =
-//        let result = Xrm.createContact( sourceWithoutCompany )
-//        AssertAreEqual result sourceWithoutCompany
-//        Assert.AreEqual( result.Company, String.Empty )
-//
-//    [<Test>]
-//    member public x.``creating a contact with existing account succeeds`` () =
-//        let result = Xrm.createContact( sourceWithCompany )
-//        AssertAreEqual result sourceWithCompany
-//        Assert.AreEqual( result.Company, sourceWithCompany.Company )
 
     [<Test>]
     member public x.``creating a random contact without company succeeds`` () =
