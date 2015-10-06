@@ -124,7 +124,9 @@ module Xrm =
         Log.Information("Creating contact {@SyncedContact}", c)
 
         let email = match c.Email.Length > 100 with
-            | true -> c.Email.Remove(99);
+            | true -> 
+                Log.Information( "Email address {@string} too long. Shortened", c.Email)
+                c.Email.Remove(99);
             | false -> c.Email
 
         xrmContact.firstname     <- c.FirstName
