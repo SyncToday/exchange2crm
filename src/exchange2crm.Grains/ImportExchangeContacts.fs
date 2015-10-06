@@ -10,15 +10,23 @@ open Serilog
 type ImportExchangeContacts() = 
     inherit Orleans.Grain()
 
+    //at nepouziva saveallcontacts a singlecontact
     member this.Import2 () : Task = 
         upcast (Async.StartAsTask <| async {
             let contacts = Exchange.getContacts ()
             Log.Information( "Got {@Contacts} from Exchange", [| contacts |] )
-            let all = SaveAllContacts()
-            all.ImportAll2( contacts )
+            
+            contacts
+            |> Array.iter(fun x -> 
+                Xrm.createContact(x)|> ignore)     
+            
+            //let all = SaveAllContacts()
+            //all.ImportAll2( contacts )
 
-            Exchange.deleteContacts contacts
+            Exchange.deleteContacts contacts          
+            //return contacts  
         })
+        
 
     member this.DoJob () =
         this.Import2().Wait()
