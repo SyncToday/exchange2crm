@@ -71,13 +71,15 @@ module Exchange =
         setEmail(app, contact.Email, EmailAddressKey.EmailAddress1)
         app.GivenName <- contact.FirstName
         app.Surname <- contact.LastName
-        app.JobTitle <- contact.JobTitle        
+        app.JobTitle <- contact.JobTitle       
+        //TODO how to assign Notes property?
+        //app.Notes <- contact.Notes 
         
         setPhone( app, contact.PhoneMobile,  PhoneNumberKey.MobilePhone )
         setPhone( app, contact.PhoneWork,  PhoneNumberKey.BusinessPhone )        
         app.Save(folder.Id)
 
-        app.Id
+        app
         
 
     let getContacts () =
