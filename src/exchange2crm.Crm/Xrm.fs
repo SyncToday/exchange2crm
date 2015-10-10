@@ -44,29 +44,8 @@ module Xrm =
                 relationship,
                 related
             )
-
-    let private toSyncedContact (c : XrmProvider.XrmService.contact) =
-        let entityReference = 
-            c.GetAttributeValue<EntityReference>("parentcustomerid")
-            
-        let parentCustomerIdName =
-            match entityReference with
-            | null -> String.Empty
-            | er ->  er.Name
-                         
-        {
-            FirstName   = c.firstname;
-            LastName    = c.lastname;
-            Company     = parentCustomerIdName;
-            JobTitle    = c.jobtitle;
-            Email       = c.emailaddress1;
-            PhoneMobile = c.mobilephone;
-            PhoneWork   = c.telephone1;
-            Notes       = c.description
-            UniqueId    = null
-        }
     
-    let getContactById (contactId : Guid) =
+    let getContactById (contactId : Guid) toSyncedContact =
         Log.Information("Searching for contact {ContactId}", contactId)
 
         let ctx = context()
@@ -117,25 +96,19 @@ module Xrm =
         result
 
 
-    let createContact (c : Interfaces.IContact) =
+    let createContact mapToXrmContact company =
         let ctx = context ()
         let xrmContact = ctx.contactSet.Create()
+        mapToXrmContact xrmContact
 
-        Log.Information("Creating contact {@SyncedContact}", c)
+        Log.Information("Creating contact {@SyncedContact}", xrmContact)
 
-        let email = match c.Email.Length > 100 with
+        xrmContact.emailaddress1 <-
+            match xrmContact.emailaddress1.Length > 100 with
             | true -> 
-                Log.Information( "Email address {@string} too long. Shortened", c.Email)
-                c.Email.Remove(99);
-            | false -> c.Email
-
-        xrmContact.firstname     <- c.FirstName
-        xrmContact.lastname      <- c.LastName
-        xrmContact.jobtitle      <- c.JobTitle
-        xrmContact.emailaddress1 <- email
-        xrmContact.mobilephone   <- c.PhoneMobile
-        xrmContact.telephone1    <- c.PhoneWork
-        xrmContact.description   <- c.Notes
+                Log.Information( "Email address {@string} too long. Shortened", xrmContact.emailaddress1)
+                xrmContact.emailaddress1.Remove(99);
+            | false -> xrmContact.emailaddress1
 
         Log.Information(
             "Updating OrganizationService entity {@Contact}", 
@@ -145,22 +118,22 @@ module Xrm =
         xrmContact.Id <- ctx.OrganizationService.Create(xrmContact)
 
         let account = 
-            match c.Company with
+            match company with
             | null    -> None
             | ""      -> None
             | company -> getAccount company
 
         match account with
         | None -> 
-            Log.Information("Account {AccountName} not found.", c.Company)
+            Log.Information("Account {AccountName} not found.", company)
         | Some(account) ->
 
             Log.Information(
                 "Found account {AccountName}: {@Account}",
-                c.Company,
+                company,
                 account
             )
 
             associateContactToAccount ctx account xrmContact
 
-        (getContactById xrmContact.Id).Value :> Interfaces.IContact
+        getContactById xrmContact.Id

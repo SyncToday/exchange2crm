@@ -1,5 +1,4 @@
 ﻿namespace exchange2crm
-open exchange2crm.Interfaces
 open Microsoft.Exchange.WebServices.Data
 open Serilog
 open System 
@@ -22,32 +21,6 @@ module Exchange =
     let private getContactsFolder service =
         Folder.Bind(service, WellKnownFolderName.Contacts)
 
-    let private toSyncedContact (c: Contact) =
-        
-        let email key = 
-            if c.EmailAddresses.Contains(key) then
-                c.EmailAddresses.[key].Address
-            else
-                null
-        
-        let phone key =
-            if c.PhoneNumbers.Contains(key) then
-                c.PhoneNumbers.[key]
-            else
-                null
-        
-        {
-            FirstName   = c.GivenName;
-            LastName    = c.Surname;
-            Company     = c.CompanyName;
-            JobTitle    = c.JobTitle;
-            Email       = email EmailAddressKey.EmailAddress1
-            PhoneMobile = phone PhoneNumberKey.MobilePhone
-            PhoneWork   = phone PhoneNumberKey.BusinessPhone
-            Notes       = c.Notes
-            UniqueId    = c.Id.UniqueId
-        }
-
     let private setEmail( r : Contact, emailAddress : string, key : EmailAddressKey ) =     
         let mutable oldEmailAddress : EmailAddress = null
         if r.EmailAddresses.TryGetValue(key, &oldEmailAddress ) then
@@ -62,41 +35,29 @@ module Exchange =
         if not ( String.IsNullOrWhiteSpace(number) ) then
             r.PhoneNumbers.[key] <- number
 
-    let createContact (contact : IContact) =         
+    let createContact mapToExchangeContact =         
         let service = getService ()        
         let folder = getContactsFolder service
         let app = new Contact(service)  
 
-        app.CompanyName <- contact.Company
-        setEmail(app, contact.Email, EmailAddressKey.EmailAddress1)
-        app.GivenName <- contact.FirstName
-        app.Surname <- contact.LastName
-        app.JobTitle <- contact.JobTitle       
-        //TODO how to assign Notes property?
-        //app.Notes <- contact.Notes 
-        
-        setPhone( app, contact.PhoneMobile,  PhoneNumberKey.MobilePhone )
-        setPhone( app, contact.PhoneWork,  PhoneNumberKey.BusinessPhone )        
+        mapToExchangeContact app        
         app.Save(folder.Id)
 
         app
         
 
-    let getContacts () =
+    let getContacts toSyncedContact =
         let service = getService ()
         let folder = getContactsFolder service
         let view = new ItemView(1000)
         let folderItems = folder.FindItems(view)
         folderItems 
-        |> Seq.ofType<Contact> 
         |> Seq.map toSyncedContact
-        |> Seq.cast<Interfaces.IContact>
         |> Seq.toArray
 
-    let deleteContacts (contacts : IContact seq) =
+    let deleteContacts contactUniqueIds =
         let service = getService ()
-        contacts 
-        |> Seq.map  (fun c  -> ItemId(c.UniqueId))
+        contactUniqueIds 
         |> Seq.map  (fun id -> Contact.Bind(service, id))
         |> Seq.iter (fun xc -> 
 
