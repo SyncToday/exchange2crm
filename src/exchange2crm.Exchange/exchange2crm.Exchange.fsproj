@@ -57,6 +57,26 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Content Include="App.config" />
+    <Compile Include="AssemblyInfo.fs" />
+    <None Include="Script.fsx" />
+    <Compile Include="Exchange.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <ProjectReference Include="..\exchange2crm\exchange2crm.fsproj">
+      <Name>exchange2crm</Name>
+      <Project>{a4af3195-9bad-4171-8f11-eae722922f5f}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework' And ($(TargetFrameworkVersion) == 'v3.5' Or $(TargetFrameworkVersion) == 'v4.0' Or $(TargetFrameworkVersion) == 'v4.5' Or $(TargetFrameworkVersion) == 'v4.5.1' Or $(TargetFrameworkVersion) == 'v4.5.2' Or $(TargetFrameworkVersion) == 'v4.5.3' Or $(TargetFrameworkVersion) == 'v4.6')">
       <ItemGroup>
@@ -123,24 +143,4 @@
       </ItemGroup>
     </When>
   </Choose>
-  <ItemGroup>
-    <Content Include="App.config" />
-    <Compile Include="AssemblyInfo.fs" />
-    <None Include="Script.fsx" />
-    <Compile Include="Exchange.fs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="mscorlib" />
-    <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
-    <ProjectReference Include="..\exchange2crm\exchange2crm.fsproj">
-      <Name>exchange2crm</Name>
-      <Project>{a4af3195-9bad-4171-8f11-eae722922f5f}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-  </ItemGroup>
 </Project>

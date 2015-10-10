@@ -1,2 +1,4 @@
 Microsoft.Orleans.Templates.Grains
 Serilog
+DynamicsCRMProvider
+EWS-Api-2.0
