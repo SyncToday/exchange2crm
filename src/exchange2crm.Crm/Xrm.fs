@@ -7,7 +7,7 @@ open FSharp.Data.TypeProviders
 open Microsoft.Xrm.Sdk
 
 module Xrm = 
-    type private XrmProvider = 
+    type public XrmProvider = 
         XrmDataProvider<
             OrganizationServiceUrl=Secret.BuildCrmServer, 
             Username=Secret.BuildCrmUser, 
@@ -66,7 +66,6 @@ module Xrm =
                 result
             )
             Some(toSyncedContact r)
-
         | None -> 
             Log.Information(
                 "Contact {ContactId} not found", 
@@ -94,7 +93,6 @@ module Xrm =
         )
 
         result
-
 
     let createContact mapToXrmContact company =
         let ctx = context ()

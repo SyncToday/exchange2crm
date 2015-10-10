@@ -13,8 +13,9 @@ type ImportExchangeContacts() =
 
     let mutable arr = Array.empty
 
-    let toSyncedContactExchange (c: Contact) : SyncedContact =
-        
+    let toSyncedContactExchange ( item : Item ) =
+        let c: Contact = item :?> Contact
+
         let email key = 
             if c.EmailAddresses.Contains(key) then
                 c.EmailAddresses.[key].Address
@@ -39,6 +40,22 @@ type ImportExchangeContacts() =
             UniqueId    = c.Id.UniqueId
         }
 
+    let toXrmContact c ( xrmContact : exchange2crm.Xrm.XrmProvider.XrmService.contact ) =
+        let email = 
+            match c.Email.Length > 100 with
+            | true -> 
+                Log.Information( "Email address {@string} too long. Shortened", c.Email)
+                c.Email.Remove(99);
+            | false -> c.Email
+
+        xrmContact.firstname     <- c.FirstName
+        xrmContact.lastname      <- c.LastName
+        xrmContact.jobtitle      <- c.JobTitle
+        xrmContact.emailaddress1 <- email
+        xrmContact.mobilephone   <- c.PhoneMobile
+        xrmContact.telephone1    <- c.PhoneWork
+        xrmContact.description   <- c.Notes        
+
     member this.Import2 () : Task<IContact[]> = 
         Async.StartAsTask <| async {
             let contacts = Exchange.getContacts toSyncedContactExchange
@@ -47,7 +64,7 @@ type ImportExchangeContacts() =
             let cs = (
                 contacts
                 |> Array.map(fun x -> 
-                    Xrm.createContact(x)
+                    Xrm.createContact (toXrmContact x) x.Company
                     ))                
             
             arr <- cs
