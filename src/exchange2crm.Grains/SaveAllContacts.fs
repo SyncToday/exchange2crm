@@ -1,5 +1,6 @@
 ﻿namespace exchange2crm.Grains
 
+#if ORLEANS
 open System
 open System.Threading.Tasks
 open Orleans
@@ -28,3 +29,4 @@ type SaveAllContacts() =
                 |> Seq.toArray
             )
 
+#endif

@@ -6,16 +6,42 @@ open Orleans
 open exchange2crm
 open exchange2crm.Interfaces
 open Serilog
+open Microsoft.Exchange.WebServices.Data
 
 type ImportExchangeContacts() = 
     inherit Orleans.Grain()
 
-    //at nepouziva saveallcontacts a singlecontact
     let mutable arr = Array.empty
+
+    let toSyncedContactExchange (c: Contact) : SyncedContact =
+        
+        let email key = 
+            if c.EmailAddresses.Contains(key) then
+                c.EmailAddresses.[key].Address
+            else
+                null
+        
+        let phone key =
+            if c.PhoneNumbers.Contains(key) then
+                c.PhoneNumbers.[key]
+            else
+                null
+        
+        {
+            FirstName   = c.GivenName;
+            LastName    = c.Surname;
+            Company     = c.CompanyName;
+            JobTitle    = c.JobTitle;
+            Email       = email EmailAddressKey.EmailAddress1
+            PhoneMobile = phone PhoneNumberKey.MobilePhone
+            PhoneWork   = phone PhoneNumberKey.BusinessPhone
+            Notes       = c.Notes
+            UniqueId    = c.Id.UniqueId
+        }
 
     member this.Import2 () : Task<IContact[]> = 
         Async.StartAsTask <| async {
-            let contacts = Exchange.getContacts ()
+            let contacts = Exchange.getContacts toSyncedContactExchange
             Log.Information( "Got {@Contacts} from Exchange", [| contacts |] )
             
             let cs = (
@@ -25,8 +51,6 @@ type ImportExchangeContacts() =
                     ))                
             
             arr <- cs
-            //let all = SaveAllContacts()
-            //all.ImportAll2( contacts )
 
             Exchange.deleteContacts contacts 
             return cs
@@ -40,6 +64,7 @@ type ImportExchangeContacts() =
         Common.run (this.DoJob, "ImportExchangeContacts" )
         arr
 
+#if ORLEANS
     interface exchange2crm.Interfaces.IImportExchangeContacts with
         member this.Import () = 
             let grainFactory = this.GrainFactory
@@ -51,3 +76,4 @@ type ImportExchangeContacts() =
 
                 Exchange.deleteContacts contacts
             })
+#endif

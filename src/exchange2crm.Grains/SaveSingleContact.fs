@@ -1,5 +1,6 @@
 ﻿namespace exchange2crm.Grains
 
+#if ORLEANS
 open System
 open System.Threading.Tasks
 open Orleans
@@ -17,3 +18,4 @@ type SaveSingleContact() =
             Task.Factory.StartNew(
                 fun () -> Xrm.createContact(contact) |> ignore
             )
+#endif
