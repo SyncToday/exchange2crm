@@ -94,7 +94,7 @@ module Xrm =
 
         result
 
-    let createContact mapToXrmContact company =
+    let createContact mapToXrmContact company mapBack =
         let ctx = context ()
         let xrmContact = ctx.contactSet.Create()
         mapToXrmContact xrmContact
@@ -134,4 +134,4 @@ module Xrm =
 
             associateContactToAccount ctx account xrmContact
 
-        getContactById xrmContact.Id
+        getContactById xrmContact.Id mapBack

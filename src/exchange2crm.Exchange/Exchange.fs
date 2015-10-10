@@ -58,7 +58,7 @@ module Exchange =
     let deleteContacts contactUniqueIds =
         let service = getService ()
         contactUniqueIds 
-        |> Seq.map  (fun id -> Contact.Bind(service, id))
+        |> Seq.map  (fun id -> Contact.Bind(service, ItemId(id)))
         |> Seq.iter (fun xc -> 
 
             Log.Information(

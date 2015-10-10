@@ -40,6 +40,27 @@ type ImportExchangeContacts() =
             UniqueId    = c.Id.UniqueId
         }
 
+    let toSyncedContactXrm (c : exchange2crm.Xrm.XrmProvider.XrmService.contact) =
+        let entityReference = 
+            c.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("parentcustomerid")
+            
+        let parentCustomerIdName =
+            match entityReference with
+            | null -> String.Empty
+            | er ->  er.Name
+                         
+        {
+            FirstName   = c.firstname;
+            LastName    = c.lastname;
+            Company     = parentCustomerIdName;
+            JobTitle    = c.jobtitle;
+            Email       = c.emailaddress1;
+            PhoneMobile = c.mobilephone;
+            PhoneWork   = c.telephone1;
+            Notes       = c.description
+            UniqueId    = null
+        }
+
     let toXrmContact c ( xrmContact : exchange2crm.Xrm.XrmProvider.XrmService.contact ) =
         let email = 
             match c.Email.Length > 100 with
@@ -64,12 +85,13 @@ type ImportExchangeContacts() =
             let cs = (
                 contacts
                 |> Array.map(fun x -> 
-                    Xrm.createContact (toXrmContact x) x.Company
-                    ))                
+                     Xrm.createContact (toXrmContact x) x.Company toSyncedContactXrm
+                    )          
+             )
             
             arr <- cs
 
-            Exchange.deleteContacts contacts 
+            Exchange.deleteContacts ( contacts |> Seq.map ( fun p -> p.UniqueId ) )
             return cs
         }
         
