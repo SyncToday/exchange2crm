@@ -18,7 +18,7 @@ namespace exchange2crm.WebJob
         private static void Main()
         {
             Common.initConsoleLog();
-            var importExchange = new ImportExchangeContacts();
+            var importExchange = new ImportExchangeContactsGrain();
             importExchange.Run();
         }
 

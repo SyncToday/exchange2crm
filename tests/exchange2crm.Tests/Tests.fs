@@ -66,12 +66,24 @@ type ``Tests``() =
         //TODO viz Exchange.createContact 
         //Assert.AreEqual(a.Notes, b.Notes)
     
+    let mapToExchangeContact (contact:IContact) (app:Microsoft.Exchange.WebServices.Data.Contact) =
+        app.CompanyName <- contact.Company
+        Exchange.setEmail(app, contact.Email, Microsoft.Exchange.WebServices.Data.EmailAddressKey.EmailAddress1)
+        app.GivenName <- contact.FirstName
+        app.Surname <- contact.LastName
+        app.JobTitle <- contact.JobTitle       
+        //TODO how to assign Notes property?
+        //app.Notes <- contact.Notes 
+        
+        Exchange.setPhone( app, contact.PhoneMobile,  Microsoft.Exchange.WebServices.Data.PhoneNumberKey.MobilePhone )
+        Exchange.setPhone( app, contact.PhoneWork,  Microsoft.Exchange.WebServices.Data.PhoneNumberKey.BusinessPhone )          
+
     [<Test>]
     member public x.``Create new random contact in the Exchange server`` () =
         let c = sourceWithoutCompanyRandom
-        let result = Exchange.createContact(c)        
+        let result = Exchange.createContact (mapToExchangeContact c)  
         Assert.IsFalse( result.Id.UniqueId.Equals(String.Empty))        
-        let importExchange = new ImportExchangeContacts();
+        let importExchange = new ImportExchangeContactsGrain();
         let r =importExchange.Run()
                 
         r
@@ -87,18 +99,23 @@ type ``Tests``() =
         Assert.IsTrue( result.IsSome )
 
     [<Test>]
-    member public x.``there are always contacts in the Exchange server`` () =
-        let result = Exchange.getContacts () |> Seq.toList
-        Assert.IsFalse( result.IsEmpty )
+    member public x.``there are no contacts in the Exchange server at the beginning`` () =
+        let importExchangeContacts = ImportExchangeContactsGrain()
+        let result = Exchange.getContacts (exchange2crm.Grains.ImportExchangeContacts.toSyncedContactExchange) |> Seq.toList
+        Assert.IsTrue( result.IsEmpty )
 
     [<Test>]
     member public x.``creating a random contact without company succeeds`` () =
-        let result = Xrm.createContact( sourceWithoutCompanyRandom )
-        AssertAreEqual result sourceWithoutCompanyRandom
-        Assert.AreEqual( result.Company, String.Empty )
+        let x : SyncedContact = downcast sourceWithoutCompanyRandom
+        let result = Xrm.createContact (ImportExchangeContacts.toXrmContact x) x.Company ImportExchangeContacts.toSyncedContactXrm
+        Assert.IsTrue(result.IsSome)
+        AssertAreEqual result.Value sourceWithoutCompanyRandom
+        Assert.AreEqual( result.Value.Company, String.Empty )
 
     [<Test>]
     member public x.``creating a random contact with existing account succeeds`` () =
-        let result = Xrm.createContact( sourceWithCompanyRandom )
-        AssertAreEqual result sourceWithCompanyRandom
-        Assert.AreEqual( result.Company, sourceWithCompanyRandom.Company )
+        let x : SyncedContact = downcast sourceWithCompanyRandom
+        let result = Xrm.createContact (ImportExchangeContacts.toXrmContact x) x.Company ImportExchangeContacts.toSyncedContactXrm
+        Assert.IsTrue(result.IsSome)
+        AssertAreEqual result.Value sourceWithCompanyRandom
+        Assert.AreEqual( result.Value.Company, sourceWithCompanyRandom.Company )

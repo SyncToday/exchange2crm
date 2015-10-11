@@ -8,12 +8,45 @@ open exchange2crm.Interfaces
 open Serilog
 open Microsoft.Exchange.WebServices.Data
 
-type ImportExchangeContacts() = 
-    inherit Orleans.Grain()
+module ImportExchangeContacts =
+    let toSyncedContactXrm (c : exchange2crm.Xrm.XrmProvider.XrmService.contact) =
+        let entityReference = 
+            c.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("parentcustomerid")
+            
+        let parentCustomerIdName =
+            match entityReference with
+            | null -> String.Empty
+            | er ->  er.Name
+                         
+        {
+            FirstName   = c.firstname;
+            LastName    = c.lastname;
+            Company     = parentCustomerIdName;
+            JobTitle    = c.jobtitle;
+            Email       = c.emailaddress1;
+            PhoneMobile = c.mobilephone;
+            PhoneWork   = c.telephone1;
+            Notes       = c.description
+            UniqueId    = null
+        }
 
-    let mutable arr = Array.empty
+    let public toXrmContact c ( xrmContact : exchange2crm.Xrm.XrmProvider.XrmService.contact ) =
+        let email = 
+            match c.Email.Length > 100 with
+            | true -> 
+                Log.Information( "Email address {@string} too long. Shortened", c.Email)
+                c.Email.Remove(99);
+            | false -> c.Email
 
-    let toSyncedContactExchange ( item : Item ) =
+        xrmContact.firstname     <- c.FirstName
+        xrmContact.lastname      <- c.LastName
+        xrmContact.jobtitle      <- c.JobTitle
+        xrmContact.emailaddress1 <- email
+        xrmContact.mobilephone   <- c.PhoneMobile
+        xrmContact.telephone1    <- c.PhoneWork
+        xrmContact.description   <- c.Notes        
+
+    let public toSyncedContactExchange ( item : Item ) =
         let c: Contact = item :?> Contact
 
         let email key = 
@@ -40,52 +73,20 @@ type ImportExchangeContacts() =
             UniqueId    = c.Id.UniqueId
         }
 
-    let toSyncedContactXrm (c : exchange2crm.Xrm.XrmProvider.XrmService.contact) =
-        let entityReference = 
-            c.GetAttributeValue<Microsoft.Xrm.Sdk.EntityReference>("parentcustomerid")
-            
-        let parentCustomerIdName =
-            match entityReference with
-            | null -> String.Empty
-            | er ->  er.Name
-                         
-        {
-            FirstName   = c.firstname;
-            LastName    = c.lastname;
-            Company     = parentCustomerIdName;
-            JobTitle    = c.jobtitle;
-            Email       = c.emailaddress1;
-            PhoneMobile = c.mobilephone;
-            PhoneWork   = c.telephone1;
-            Notes       = c.description
-            UniqueId    = null
-        }
+type ImportExchangeContactsGrain() = 
+    inherit Orleans.Grain()
 
-    let toXrmContact c ( xrmContact : exchange2crm.Xrm.XrmProvider.XrmService.contact ) =
-        let email = 
-            match c.Email.Length > 100 with
-            | true -> 
-                Log.Information( "Email address {@string} too long. Shortened", c.Email)
-                c.Email.Remove(99);
-            | false -> c.Email
-
-        xrmContact.firstname     <- c.FirstName
-        xrmContact.lastname      <- c.LastName
-        xrmContact.jobtitle      <- c.JobTitle
-        xrmContact.emailaddress1 <- email
-        xrmContact.mobilephone   <- c.PhoneMobile
-        xrmContact.telephone1    <- c.PhoneWork
-        xrmContact.description   <- c.Notes        
+    let mutable arr = Array.empty
 
     member this.Import2 () : Task<IContact[]> = 
         Async.StartAsTask <| async {
-            let contacts = Exchange.getContacts toSyncedContactExchange
+            let contacts = Exchange.getContacts ImportExchangeContacts.toSyncedContactExchange
             Log.Information( "Got {@Contacts} from Exchange", [| contacts |] )
             
             let cs =
                 contacts
                 |> Array.map(fun x -> 
-                     Xrm.createContact (toXrmContact x) x.Company toSyncedContactXrm
+                     Xrm.createContact (ImportExchangeContacts.toXrmContact x) x.Company ImportExchangeContacts.toSyncedContactXrm
                     )          
                 |> Array.map( 
                     fun t -> 

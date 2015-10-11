@@ -21,14 +21,14 @@ module Exchange =
     let private getContactsFolder service =
         Folder.Bind(service, WellKnownFolderName.Contacts)
 
-    let private setEmail( r : Contact, emailAddress : string, key : EmailAddressKey ) =     
+    let public setEmail( r : Contact, emailAddress : string, key : EmailAddressKey ) =     
         let mutable oldEmailAddress : EmailAddress = null
         if r.EmailAddresses.TryGetValue(key, &oldEmailAddress ) then
             r.EmailAddresses.[key] <- null
         if not (String.IsNullOrWhiteSpace(emailAddress)) then
             r.EmailAddresses.[key] <- EmailAddress(emailAddress)
 
-    let private setPhone( r : Contact, number : string, key : PhoneNumberKey ) =     
+    let public setPhone( r : Contact, number : string, key : PhoneNumberKey ) =     
         let mutable oldNumber : string = null
         if r.PhoneNumbers.TryGetValue(key, &oldNumber ) then
             r.PhoneNumbers.[key] <- null
