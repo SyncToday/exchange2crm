@@ -87,6 +87,16 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\exchange2crm.Crm\exchange2crm.Crm.fsproj">
+      <Name>exchange2crm.Crm</Name>
+      <Project>{64e3b8f8-bca0-41b2-916d-eac7148bc6a7}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\exchange2crm.Exchange\exchange2crm.Exchange.fsproj">
+      <Name>exchange2crm.Exchange</Name>
+      <Project>{8c53322b-5909-47d7-8770-289764e023f1}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\exchange2crm.Grains\exchange2crm.Grains.fsproj">
       <Name>exchange2crm.Grains</Name>
       <Project>{d412a539-1e5f-4903-8043-4486b4481183}</Project>

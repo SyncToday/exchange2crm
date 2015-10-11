@@ -82,17 +82,22 @@ type ImportExchangeContacts() =
             let contacts = Exchange.getContacts toSyncedContactExchange
             Log.Information( "Got {@Contacts} from Exchange", [| contacts |] )
             
-            let cs = (
+            let cs =
                 contacts
                 |> Array.map(fun x -> 
                      Xrm.createContact (toXrmContact x) x.Company toSyncedContactXrm
                     )          
-             )
+                |> Array.map( 
+                    fun t -> 
+                        let r : IContact = upcast t.Value
+                        r
+                ) 
             
             arr <- cs
 
             Exchange.deleteContacts ( contacts |> Seq.map ( fun p -> p.UniqueId ) )
-            return cs
+
+            return cs 
         }
         
 
