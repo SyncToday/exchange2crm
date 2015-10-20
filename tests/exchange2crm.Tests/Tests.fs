@@ -107,7 +107,7 @@ type ``Tests``() =
     [<Test>]
     member public x.``creating a random contact without company succeeds`` () =
         let x : SyncedContact = downcast sourceWithoutCompanyRandom
-        let result = Xrm.createContact (ImportExchangeContacts.toXrmContact x) x.Company ImportExchangeContacts.toSyncedContactXrm
+        let result = Xrm.createContact (Xrm.CreateParameters.FillXrmContact(ImportExchangeContacts.toXrmContact x)) x.Company ImportExchangeContacts.toSyncedContactXrm
         Assert.IsTrue(result.IsSome)
         AssertAreEqual result.Value sourceWithoutCompanyRandom
         Assert.AreEqual( result.Value.Company, String.Empty )
@@ -115,7 +115,7 @@ type ``Tests``() =
     [<Test>]
     member public x.``creating a random contact with existing account succeeds`` () =
         let x : SyncedContact = downcast sourceWithCompanyRandom
-        let result = Xrm.createContact (ImportExchangeContacts.toXrmContact x) x.Company ImportExchangeContacts.toSyncedContactXrm
+        let result = Xrm.createContact (Xrm.CreateParameters.FillXrmContact(ImportExchangeContacts.toXrmContact x)) x.Company ImportExchangeContacts.toSyncedContactXrm
         Assert.IsTrue(result.IsSome)
         AssertAreEqual result.Value sourceWithCompanyRandom
         Assert.AreEqual( result.Value.Company, sourceWithCompanyRandom.Company )

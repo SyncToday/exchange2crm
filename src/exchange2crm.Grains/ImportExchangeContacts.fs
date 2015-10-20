@@ -86,7 +86,7 @@ type ImportExchangeContactsGrain() =
             let cs =
                 contacts
                 |> Array.map(fun x -> 
-                     Xrm.createContact (ImportExchangeContacts.toXrmContact x) x.Company ImportExchangeContacts.toSyncedContactXrm
+                     Xrm.createContact (Xrm.CreateParameters.FillXrmContact(ImportExchangeContacts.toXrmContact x)) x.Company ImportExchangeContacts.toSyncedContactXrm
                     )          
                 |> Array.map( 
                     fun t -> 

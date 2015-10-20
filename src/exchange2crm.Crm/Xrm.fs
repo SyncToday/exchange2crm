@@ -13,6 +13,10 @@ module Xrm =
             Username=Secret.BuildCrmUser, 
             Password=Secret.BuildCrmPassword
         >
+
+    type CreateParameters =
+    | Dict of System.Collections.Generic.Dictionary<string,string>
+    | FillXrmContact of (XrmProvider.XrmService.contact -> unit)
     
     let private context () = 
         XrmProvider.GetDataContext(
@@ -94,10 +98,11 @@ module Xrm =
 
         result
 
-    let createContact mapToXrmContact company mapBack =
+    let createContact (fillParameters:CreateParameters) company mapBack =
         let ctx = context ()
         let xrmContact = ctx.contactSet.Create()
-        mapToXrmContact xrmContact
+        match fillParameters with
+        | FillXrmContact mapToXrmContact -> mapToXrmContact xrmContact        
 
         Log.Information("Creating contact {@SyncedContact}", xrmContact)
 
