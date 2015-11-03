@@ -8,3 +8,5 @@ A lot of companies prefer to store their contact in the cloud to make sure their
 Mobile workers can use [CRM for phones and tablets](https://www.microsoft.com/en-us/dynamics/crm-customer-center/install-crm-for-phones-and-tablets.aspx) on their supported mobile devices however there is no such simple option to create a contact and assign it to the parent company.
 
 Exchange2CRM import contacts from Office 365 Exchange to Microsoft Dynamics CRM and if the parent company is found, it will assign the contact to the parent company. It is an ideal companion to [the CRM server-side sync](https://www.microsoft.com/en-us/dynamics/crm-customer-center/synchronizing-data-with-outlook-or-exchange-faq.aspx).
+
+![See in the action](https://gist.githubusercontent.com/davidpodhola/6abfc62fefd4e618df4b/raw/09df8bda74a7bdb01d8a03ef0fd690fc3a792562/exchange2crm.gif)
